@@ -1,0 +1,77 @@
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    default-model-expand-depth: -1
+  api-docs:
+    path: /api-docs
+    enabled: true
+
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KC_ISSUER_URI}/${KC_REALM}
+        registration:
+          keycloak:
+            client-id: ${KC_CLIENT_ID}
+            client-secret: ${KC_CLIENT_SECRET}
+            authorization-grant-type: ${KC_AUTHORIZATION_GRANT_TYPE}
+
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    out-of-order: true
+    schemas: ${POSTGRES_DATABASE}
+    locations: classpath:db/migration/dev
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}
+
+  cache:
+    type: redis
+
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+
+  jackson:
+    deserialization:
+      fail-on-ignored-properties: false
+    serialization:
+      indent-output: false
+      write-dates-as-timestamps: false
+      write-bigdecimal-as-plain: true
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    property-naming-strategy: SNAKE_CASE
+
+keycloak:
+  server:
+    url: ${KC_SERVER_URL}
+  admin:
+    username: ${KEYCLOAK_ADMIN}
+    password: ${KEYCLOAK_ADMIN_PASSWORD}
+  realm: ${KC_REALM}
+  client-id: ${KC_CLIENT_ID}
+  client-secret: ${KC_CLIENT_SECRET}
+
+logging:
+  level:
+    jakarta:
+      httpclient: DEBUG
+    org:
+      flywaydb: DEBUG
+      keycloak: DEBUG
+    web: debug

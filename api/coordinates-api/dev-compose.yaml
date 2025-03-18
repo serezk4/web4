@@ -1,0 +1,15 @@
+services:
+  redis:
+    image: redis:latest
+    restart: on-failure
+    container_name: coordinates-api-redis
+    env_file:
+      - ${CONFIG_BASE_PATH}/api/coordinates-api/secret/redis-secret.env
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5

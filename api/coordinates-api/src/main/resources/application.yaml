@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: 'coordinates-service'
+  main:
+    web-application-type: reactive
+#  webflux:
+#    base-path: /coordinates
+
+  profiles:
+    active: dev
